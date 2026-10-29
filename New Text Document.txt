@@ -1,0 +1,89 @@
+# Program 1
+
+import os
+os.environ["PATH"] += os.pathsep + r"C:\Program Files\Graphviz\bin"
+
+import pandas as pd
+
+PlayTennis = pd.read_csv(
+    r"C:\Users\Atish gaikwad\OneDrive\Desktop\PlayTennis.csv"
+)
+print(PlayTennis)
+
+
+# Program 2
+from sklearn.preprocessing import LabelEncoder
+
+le = LabelEncoder()
+
+PlayTennis['Outlook'] = le.fit_transform(PlayTennis['Outlook'])
+PlayTennis['Temperature'] = le.fit_transform(PlayTennis['Temperature'])
+PlayTennis['Humidity'] = le.fit_transform(PlayTennis['Humidity'])
+PlayTennis['Wind'] = le.fit_transform(PlayTennis['Wind'])
+PlayTennis['Play Tennis'] = le.fit_transform(PlayTennis['Play Tennis'])
+
+print(PlayTennis)
+
+
+# Program 3: Decision Tree
+y = PlayTennis['Play Tennis']
+x = PlayTennis.drop(['Play Tennis'], axis=1)
+
+from sklearn import tree
+
+clf = tree.DecisionTreeClassifier(criterion='entropy')
+clf = clf.fit(x, y)
+
+tree.plot_tree(clf)
+
+import matplotlib.pyplot as plt
+
+plt.show()
+
+
+# Program 4
+
+y = PlayTennis['Play Tennis']
+x = PlayTennis.drop(['Play Tennis'], axis=1)
+
+print(x)
+
+from sklearn import tree
+
+clf = tree.DecisionTreeClassifier(criterion='entropy')
+clf = clf.fit(x, y)
+
+print(clf)
+tree.plot_tree(clf)
+
+
+# Program 5: Decision Tree Visualization
+
+y = PlayTennis['Play Tennis']
+X = PlayTennis.drop(['Play Tennis'], axis=1)
+
+# Fitting the model
+from sklearn import tree
+from sklearn.tree import DecisionTreeClassifier
+import matplotlib.pyplot as plt
+import graphviz
+
+clf = DecisionTreeClassifier(criterion='entropy')
+clf = clf.fit(X, y)
+
+# Visualize the tree
+tree.plot_tree(clf)
+plt.show()
+
+# Export the decision tree
+dot_data = tree.export_graphviz(clf, out_file=None)
+graph = graphviz.Source(dot_data)
+
+graph.render("DecisionTree", format="png", cleanup=True)
+print("Decision tree saved as DecisionTree.png")
+
+
+# Program 6
+X_pred = clf.predict(X)
+print(X_pred)
+print(X_pred == y)
